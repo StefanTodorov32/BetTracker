@@ -1,5 +1,22 @@
+import { Navbar } from "./components/Navbar";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./pages/Home";
+import { Dashboard } from "./pages/Dashboard";
+import { Login } from "./pages/Login";
 function App() {
-    return <div className="bg-red"><h1 className="text-red-400">Hello</h1></div>;
+    return (
+        <div className="bg-background flex flex-col h-screen text-foreground">
+            <Navbar />
+            <div className="flex flex-col flex-1">
+                <Routes>
+                    <Route path="/about"></Route>
+                    <Route path="/login" element={<Login />}></Route>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/" element={<HomePage />} />
+                </Routes>
+            </div>
+        </div>
+    );
 }
 
 export default App;
