@@ -1,4 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
+import { ModeToggle } from "./mode-toggle";
+import {
+    SignInButton,
+    SignOutButton,
+    SignedIn,
+    SignedOut,
+} from "@clerk/clerk-react";
 
 export const Navbar = () => {
     return (
@@ -17,15 +24,33 @@ export const Navbar = () => {
                 >
                     Home
                 </Link>
-                <Link className="text-lg font-semibold hover:underline" to="/dashboard">
-                    Dashboard
-                </Link>
-                <Link className="text-lg font-semibold hover:underline" to="/login">
-                    Login
-                </Link>
-                <Link className="text-lg font-semibold hover:underline" to="#">
-                    Logout
-                </Link>
+                <SignedOut>
+                    <div className="text-lg font-semibold hover:underline">
+                        <SignInButton />
+                    </div>
+                </SignedOut>
+                <SignedIn>
+                    <Link
+                        className="text-lg font-semibold hover:underline"
+                        to="/dashboard"
+                    >
+                        Dashboard
+                    </Link>
+                    <Link
+                        className="text-lg font-semibold hover:underline"
+                        to="/profile"
+                    >
+                        Profile
+                    </Link>
+                    <div className="text-lg font-semibold hover:underline">
+                        <SignOutButton
+                            signOutCallback={() => {
+                                redirect("/");
+                            }}
+                        />
+                    </div>
+                </SignedIn>
+                <ModeToggle />
             </nav>
         </nav>
     );
