@@ -29,8 +29,10 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "./ui/calendar";
 import { format } from "date-fns";
+import { createBet } from "@/utils/supabaseRequests";
+import { useAuth } from "@clerk/clerk-react";
 
-type Bet = {
+export type Bet = {
     team1: string;
     prediction: string;
     team2: string;
@@ -48,9 +50,14 @@ export default function CreateBetsModal({
     setShowModal: (show: boolean) => void;
 }) {
     const form = useForm<Bet>();
-
-    const onSubmit = (data: Bet) => {
-        console.log("🚀 ~ onSubmit ~ data:", data);
+    const {userId, getToken} = useAuth();
+    const onSubmit = async(data: Bet) => {
+        const token = await getToken({
+            template: "supabase",
+        });
+        if (!userId || !token) return;
+        const res = await createBet({ bet: data , userId, token});
+        console.log(res);
     };
     return (
         <Card className="w-full max-w-lg border-[0px]">
